@@ -13,11 +13,12 @@
   <div v-else>
     <ul>
       <li
-      v-for="todo in todos"
+      v-for="todo in sortedTodos()"
       :key="todo.date"
+      :class="{ done: todo.done }"
       >
       <label>
-        <input type="checkbox" v-model="todo.completed">
+        <input type="checkbox" v-model="todo.done">
         <!-- If checked, done becomes true and vice versa  -->
         {{ todo.title }}
       </label>
@@ -42,7 +43,16 @@ const todos = ref([{
   title: 'Go to the gym',
   done: false,
   date: Date.now()
-}]) // Array of tasks
+}, {
+  title: 'Buy groceries',
+  done: false,
+  date: Date.now()
+}, {
+  title: 'Design wireframes and UML diagrams for Token.io',
+  done: false,
+  date: Date.now()
+}
+]) // Array of tasks
 
 const addTodo = () => {
   // Method to add a new task
@@ -55,9 +65,20 @@ const addTodo = () => {
 
 newTodo.value = '' // Reset the input field
 
+const sortedTodos = () => {
+  // Method to sort the tasks
+  return todos.value.sort((a, b) => a.done - b.done)
+}
+
 </script>
 
 
-<style scoped lang="scss">
+<style scoped lang="css">
+
+.done {
+  text-decoration: line-through;
+  color: grey;
+  opacity: .5;
+}
 
 </style>
