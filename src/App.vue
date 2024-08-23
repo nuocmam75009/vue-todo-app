@@ -1,92 +1,80 @@
 <template>
-  <form actions="" @submit.prevent="addTodo">
-    <fieldset role="group">
-      <input
-        v-model="newTodo"
-        type="text"
-        placeholder="Tasks to do:">
-      <button :disabled="newTodo.length === 0">Add</button>
-  </fieldset>
-  </form>
+  <div>
+    <form @submit.prevent="addTodo">
+      <fieldset>
+        <input v-model="newTodo" placeholder="Add a new task:">
+        <button :disabled="newTodo.length === 0">Add</button>
+      </fieldset>
+    </form>
 
-  <div v-if="todos.length === 0">No task to do</div>
-  <div v-else>
-    <ul>
-      <li
-      v-for="todo in sortedTodos()"
-      :key="todo.date"
-      :class="{ done: todo.done }"
-      >
+    <div v-if="todos.length === 0">No todos 😞</div>
+    <div v-else>
+      <ul>
+        <li
+          v-for="todo in sortedTodos()"
+          :key="todo.date"
+          :class="{ done: todo.done }"
+        >
+          <label v-if="!isEditing(todo)">
+            <input type="checkbox" v-model="todo.done">
+            {{ todo.title }}
+            <button @click="editTask(todo)">Edit</button>
+          </label>
+          <div v-else>
+            <input v-model="todo.title" @keyup.enter="saveTask(todo)">
+            <button @click="saveTask(todo)">Save</button>
+          </div>
+        </li>
+      </ul>
       <label>
-        <input type="checkbox" v-model="todo.done">
-        <!-- If checked, done becomes true and vice versa  -->
-        {{ todo.title }}
+        <input type="checkbox" v-model="hideCompleted"> Hide completed tasks
       </label>
-    </li>
-    </ul>
-    <label>
-      <input type="checkbox" v-model="hideCompleted"> Hide completed tasks
-    </label>
+    </div>
   </div>
 </template>
 
-
-
-<script setup>
-
-import { ref } from 'vue'
-
-const newTodo = ref('') // Task to do
-const todos = ref([{
-  title: 'Finish Fanprime technical test',
-  done: true,
-  date: Date.now()
-}, {
-  title: 'Go to the gym',
-  done: false,
-  date: Date.now()
-}, {
-  title: 'Buy groceries',
-  done: false,
-  date: Date.now()
-}, {
-  title: 'Design wireframes and UML diagrams for Token.io',
-  done: false,
-  date: Date.now()
-}
-]) // Array of tasks
-
-const addTodo = () => {
-  // Method to add a new task
-  todos.value.push({
-    title: newTodo.value,
-    done: false,
-    date: Date.now()
-  })
-}
-
-newTodo.value = '' // Reset the input field
-
-const sortedTodos = () => {
-  // Method to sort the tasks
- const sortedTodos = todos.value.toSorted((a, b) => a.completed > b.completed ? 1 : -1)
-  if (hideCompleted.value) {
-    return sortedTodos.filter(todo => !todo.done)
+<script>
+export default {
+  data() {
+    // Initialize the component's data
+    return {
+      newTodo: '',
+      todos: [],
+      hideCompleted: false,
+      editingTask: null
+    };
+  },
+  methods: {
+    addTodo() {
+      // Add a new todo to the list
+      if (this.newTodo.trim()) {
+        this.todos.push({ title: this.newTodo, done: false, date: new Date() });
+        this.newTodo = '';
+      }
+    },
+    sortedTodos() {
+      // Filter the todos
+      return this.todos.sort((a, b) => a.date - b.date);
+    },
+    editTask(todo) {
+      // Edit a todo
+      this.editingTask = todo;
+    },
+    saveTask(todo) {
+      // Save edited
+      this.editingTask = null;
+    },
+    isEditing(todo) {
+      // If todo is being edited
+      return this.editingTask === todo;
+    }
   }
-  return sortedTodos
-}
-
-const hideCompleted = ref(false) // Hide completed tasks
-
+};
 </script>
 
-
-<style scoped lang="css">
-
+<style scoped>
 .done {
   text-decoration: line-through;
-  color: grey;
   opacity: .5;
 }
-
 </style>
