@@ -23,8 +23,10 @@
         {{ todo.title }}
       </label>
     </li>
-
     </ul>
+    <label>
+      <input type="checkbox" v-model="hideCompleted"> Hide completed tasks
+    </label>
   </div>
 </template>
 
@@ -67,8 +69,14 @@ newTodo.value = '' // Reset the input field
 
 const sortedTodos = () => {
   // Method to sort the tasks
-  return todos.value.sort((a, b) => a.done - b.done)
+ const sortedTodos = todos.value.toSorted((a, b) => a.completed > b.completed ? 1 : -1)
+  if (hideCompleted.value) {
+    return sortedTodos.filter(todo => !todo.done)
+  }
+  return sortedTodos
 }
+
+const hideCompleted = ref(false) // Hide completed tasks
 
 </script>
 
