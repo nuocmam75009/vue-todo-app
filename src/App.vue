@@ -18,7 +18,7 @@
           <label v-if="!isEditing(todo)">
             <input type="checkbox" v-model="todo.done">
             {{ todo.title }}
-            <button @click="editTask(todo)">Edit</button>
+            <button class="editButton" @click="editTask(todo)">Edit</button>
           </label>
           <div v-else>
             <input v-model="todo.title" @keyup.enter="saveTask(todo)">
@@ -69,7 +69,7 @@ export default {
       return this.editingTask === todo;
     }
   }
-};
+}
 </script>
 
 <style scoped>
@@ -77,4 +77,11 @@ export default {
   text-decoration: line-through;
   opacity: .5;
 }
+
+.editButton {
+  margin-left: 10px;
+  font-size: 0.8rem;
+  padding: 0.2rem 0.5rem;
+}
+
 </style>
