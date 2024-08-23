@@ -26,9 +26,9 @@
           </div>
         </li>
       </ul>
-      <label>
+      <!-- <label>
         <input type="checkbox" v-model="hideCompleted"> Hide completed tasks
-      </label>
+      </label> -->
     </div>
   </div>
 </template>
