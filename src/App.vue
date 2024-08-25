@@ -94,4 +94,10 @@ export default {
   border-radius: .5;
 }
 
+.container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 </style>
