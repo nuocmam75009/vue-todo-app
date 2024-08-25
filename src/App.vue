@@ -3,7 +3,7 @@
     <form @submit.prevent="addTodo">
       <fieldset>
         <input v-model="newTodo" placeholder="Add a new task:">
-        <button :disabled="newTodo.length === 0">Add</button>
+        <button class="addButton" :disabled="newTodo.length === 0">Add</button>
       </fieldset>
     </form>
 
@@ -82,6 +82,16 @@ export default {
   margin-left: 10px;
   font-size: 0.8rem;
   padding: 0.2rem 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: .5;
+}
+
+.addButton {
+  margin-left: 10px;
+  font-size: 0.8rem;
+  padding: 0.2rem 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: .5;
 }
 
 </style>
